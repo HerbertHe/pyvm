@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "pyvm/cmd"
+import "cn.jieec.pyvm/cmd"
 
 func main() {
 	cmd.Execute()
