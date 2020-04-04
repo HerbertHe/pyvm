@@ -35,9 +35,8 @@ var configLsCmd = &cobra.Command{
 		if err := viper.ReadInConfig(); err == nil {
 			fmt.Printf("Version:\t%v\n", viper.GetString("Version"))
 			fmt.Printf("Source:\t%v\n", viper.GetString("Source"))
-			Path := viper.GetStringMapString("Path")
-			fmt.Printf("PYVM_HOME:\t%v\n", Path["PYVM_HOME"])
-			fmt.Printf("PYTHON_SYMLINK:\t%v\n", Path["PYTHON_SYMLINK"])
+			fmt.Printf("PYVM_HOME:\t%v\n", viper.GetString("PYVM_HOME"))
+			fmt.Printf("PYTHON_SYMLINK:\t%v\n", viper.GetString("PYTHON_SYMLINK"))
 		}
 	},
 }
