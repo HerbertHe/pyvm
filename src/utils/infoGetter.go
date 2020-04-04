@@ -20,7 +20,7 @@ func infoFormatter(rawData string) ([]string, []string) {
 	r, _ = regexp.Compile(`<span class="release-number"><a[^>]*>([^<]*)</a></span>`)
 	releaseNum := r.FindAllStringSubmatch(olData[0][0], -1)
 	for _, value := range releaseNum {
-		releasesNumber = append(releasesNumber, strings.Replace(value[1], " ", "", -1))
+		releasesNumber = append(releasesNumber, strings.Replace(value[1], " ", "-", -1))
 	}
 	r, _ = regexp.Compile(`<span class="release-date">([^<]*)</span>`)
 	releaseDate := r.FindAllStringSubmatch(olData[0][0], -1)

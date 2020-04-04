@@ -18,6 +18,7 @@ package cmd
 import (
 	"cn.jieec.pyvm/utils"
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -46,6 +47,8 @@ pyvm create --env_name=<env_name> --py_version=<py_version>
 		}
 		// 提前检查env_name目录是否存在
 		if len(envName) != 0 && len(pythonVersion) != 0 {
+			// 规范化python版本输入
+			pythonVersion = strings.Replace(strings.ToLower(pythonVersion), "p", "P", 1)
 			for index, value := range releases {
 				if index != len(releases) - 1 && value != pythonVersion {
 					continue
@@ -60,7 +63,7 @@ pyvm create --env_name=<env_name> --py_version=<py_version>
 				}
 				if value == pythonVersion {
 					// 执行新建命令
-					// 下载到PYVM_HOME --> envs下解压
+					// 下载到PYVM_HOME --> envs
 					return
 				}
 			}

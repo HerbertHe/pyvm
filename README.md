@@ -10,3 +10,4 @@
 * [ ] 添加remove命令
 * [ ] 添加version命令
 * [ ] 添加source命令
+* [x] 添加config init命令

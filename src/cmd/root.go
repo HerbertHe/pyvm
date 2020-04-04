@@ -24,9 +24,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-var cfgFile string
-
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "pyvm",
 	Short: "A tool for helping you manage python version!",
@@ -44,31 +41,25 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.pyvm.yaml)")
 }
 
 // 初始化读取配置文件和环境变量
 func initConfig() {
-	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
-	} else {
-		// Find home directory.
-		home, err := homedir.Dir()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-
-		// Search config in home directory with name ".pyvm" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".pyvm")
+	home, err := homedir.Dir()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
 	}
 
-	viper.AutomaticEnv() // read in environment variables that match
+	viper.AddConfigPath(home)
+	viper.SetConfigName(".pyvm")
+	viper.SetConfigType("yaml")
+	viper.AutomaticEnv() // 自动读取匹配的环境变量
 
-	// If a config file is found, read it in.
+	// 如果配置文件发现，读取它
 	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
+		fmt.Printf("Using config file: %v", viper.ConfigFileUsed())
+	} else {
+		fmt.Println("Config file not found, please run `pyvm config init` to generate a new config file")
 	}
 }
