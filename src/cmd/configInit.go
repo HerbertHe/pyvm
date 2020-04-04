@@ -29,8 +29,8 @@ GitHub: !!str https://github.com/HerbertHe/pyvm
 Gitee: !!str https://gitee.com/HerbertHe/pyvm
 Version: !!str v1.0.0
 Path: !!map
-  - PYVM_HOME: !!str  # 命令行文件环境变量
-  - PYTHON_SYMLINK: !!str # python的默认path
+  PYVM_HOME: !!str  # 命令行文件环境变量
+  PYTHON_SYMLINK: !!str # python的默认path
 Source: !!str https://pypi.org # pip软件源
 `
 

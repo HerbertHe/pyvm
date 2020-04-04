@@ -56,10 +56,7 @@ func initConfig() {
 	viper.SetConfigType("yaml")
 	viper.AutomaticEnv() // 自动读取匹配的环境变量
 
-	// 如果配置文件发现，读取它
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Printf("Using config file: %v", viper.ConfigFileUsed())
-	} else {
+	if err := viper.ReadInConfig(); err != nil {
 		fmt.Println("Config file not found, please run `pyvm config init` to generate a new config file")
 	}
 }

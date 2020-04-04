@@ -20,7 +20,7 @@ func infoFormatter(rawData string) ([]string, []string) {
 	r, _ = regexp.Compile(`<span class="release-number"><a[^>]*>([^<]*)</a></span>`)
 	releaseNum := r.FindAllStringSubmatch(olData[0][0], -1)
 	for _, value := range releaseNum {
-		releasesNumber = append(releasesNumber, strings.Replace(value[1], " ", "-", -1))
+		releasesNumber = append(releasesNumber, strings.Replace(value[1], " ", "_", -1))
 	}
 	r, _ = regexp.Compile(`<span class="release-date">([^<]*)</span>`)
 	releaseDate := r.FindAllStringSubmatch(olData[0][0], -1)
@@ -49,4 +49,10 @@ func getAllPythonVersions() string {
 // 返回版本信息
 func BackPythonVersions() ([]string, []string) {
 	return infoFormatter(getAllPythonVersions())
+}
+
+// 版本号提取
+func BackVersionNum(version string) string {
+	r, _ := regexp.Compile(`((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})(\.((2(5[0-5]|[0-4]\d))|[0-1]?\d{1,2})){2}`)
+	return r.FindAllStringSubmatch(version, -1)[0][0]
 }
