@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"strings"
 )
 
 // 下载Python
@@ -62,21 +63,29 @@ func DownloadPython(version string, fileName string, fullName string, fb func(le
 				}
 				break
 			}
-			//	没有错误了，使用回调
-			// 跳出循环
 			fb(fSize, written)
+			if fSize == written {
+				fmt.Printf("下载完成！文件位于: %v\n", fullName)
+				break
+			}
 		}
 	}
 	return err
 }
 
 // 安装Python
-func InstallPythonPassive(pythonShell string, dir string) {
+func InstallPythonPassive(pythonShell string, dir string) error {
 	fmt.Println("安装python环境中...")
-	args := "DefaultJustForMeTargetDir=" + dir + " AssociateFiles=0 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0"
-	cmd := exec.Command(pythonShell, args)
+	args := pythonShell + "DefaultJustForMeTargetDir=" + dir + " AssociateFiles=0 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0"
+	cmd := exec.Command(pythonShell, "/passive", args)
 	err := cmd.Run()
 	if err != nil {
-		fmt.Printf("执行安装时发生错误...\n%v\n", err)
+		return err
 	}
+	return nil
+}
+
+// 规范化python文本输入
+func FormatPythonInput(version string) string {
+	return strings.Replace(strings.ToLower(version), "p", "P", 1)
 }
