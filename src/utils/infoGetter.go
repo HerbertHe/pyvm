@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"github.com/spf13/viper"
 	"io/ioutil"
 	"net/http"
 	"regexp"
@@ -46,10 +47,21 @@ func getAllPythonVersions() string {
 	return string(result)
 }
 
+// 返回本地版本
+func GetLocalPythonVersions() ([]string, error) {
+	pythonDir := viper.Get("PYVM_HOME").(string) + "/pythons"
+	dirs, err := GetLocalDirs(pythonDir)
+	if err != nil {
+		return nil, err
+	}
+	return dirs, nil
+}
+
 // 返回版本信息
 func BackPythonVersions() ([]string, []string) {
 	return infoFormatter(getAllPythonVersions())
 }
+
 
 // 版本号提取
 func BackVersionNum(version string) string {

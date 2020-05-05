@@ -15,8 +15,8 @@ import (
 func DownloadPython(version string, fileName string, fullName string, fb func(length, downLen int64)) error {
 	downUrl := `https://npm.taobao.org/mirrors/python/` + BackVersionNum(version) + `/` + fileName
 	var (
-		fSize int64
-		buf = make([]byte, 32*1024)
+		fSize   int64
+		buf     = make([]byte, 32*1024)
 		written int64
 	)
 	client := new(http.Client)
@@ -76,8 +76,7 @@ func DownloadPython(version string, fileName string, fullName string, fb func(le
 // 安装Python
 func InstallPythonPassive(pythonShell string, dir string) error {
 	fmt.Println("安装python环境中...")
-	args := pythonShell + "DefaultJustForMeTargetDir=" + dir + " AssociateFiles=0 Shortcuts=0 Include_launcher=0 InstallLauncherAllUsers=0"
-	cmd := exec.Command(pythonShell, "/passive", args)
+	cmd := exec.Command(pythonShell, "/passive", "Include_launcher=0", "Shortcuts=0", "InstallAllUsers=1", "TargetDir="+dir, "DefaultCustomTargetDir="+dir, "AssociateFiles=0", "InstallLauncherAllUsers=0")
 	err := cmd.Run()
 	if err != nil {
 		return err

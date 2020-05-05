@@ -18,7 +18,6 @@ package cmd
 import (
 	"cn.jieec.pyvm/utils"
 	"fmt"
-	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
@@ -33,7 +32,7 @@ var (
 // pythonAddCmd represents the pythonAdd command
 var pythonAddCmd = &cobra.Command{
 	Use:   "add",
-	Short: "Add a new python",
+	Short: "添加一个新的python版本",
 	Long: ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		releases, _ := utils.BackPythonVersions()
@@ -66,10 +65,6 @@ var pythonAddCmd = &cobra.Command{
 					return
 				}
 				if value == pythonVersion {
-					home, _ := homedir.Dir()
-					viper.SetConfigName(".pyvm")
-					viper.SetConfigType("yaml")
-					viper.AddConfigPath(home)
 					if err := viper.ReadInConfig(); err == nil {
 						pyvmHome := viper.GetString("PYVM_HOME")
 						if len(pyvmHome) != 0 {
@@ -94,8 +89,9 @@ var pythonAddCmd = &cobra.Command{
 							}
 							_, err := os.Stat(fullName)
 							_, err1 := os.Stat(pythonLocal)
-							if  err1!= nil || err != nil {
-								if os.IsNotExist(err) || os.IsNotExist(err1) {
+							// 文件都不存在
+							if err1 != nil && err != nil {
+								if os.IsNotExist(err) && os.IsNotExist(err1) {
 									//	文件不存在
 									fmt.Printf("正在从淘宝镜像站获取: %v\n", fileName)
 									if err := utils.DownloadPython(baseName, fileName, fullName, func(length, downLen int64) {
@@ -115,9 +111,21 @@ var pythonAddCmd = &cobra.Command{
 									//	其他错误
 									fmt.Printf("发生其他错误: %v\n%v\n", err, err1)
 								}
-							} else {
-								//	文件存在
-								fmt.Printf("文件已存在于%v\n", fullName)
+							}
+							// 安装包存在，没有安装
+							if err == nil && err1 != nil {
+								if os.IsNotExist(err1) {
+									fmt.Printf("文件已存在 %v\n", fullName)
+									fmt.Println("正在执行安装...")
+									// passive安装
+									if err = utils.InstallPythonPassive(fullName, pythonLocal); err != nil {
+										fmt.Printf("执行安装时发生错误...\n%v\n", err)
+									} else {
+										fmt.Printf("python环境安装成功, 位于%v\n", pythonLocal)
+									}
+								} else {
+									fmt.Printf("发生其他错误: %v\n", err1)
+								}
 							}
 						} else {
 							fmt.Printf("没有配置PYVM_HOME参数, 请在%v文件中配置，为pyvm的安装目录\n", viper.ConfigFileUsed())

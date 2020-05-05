@@ -19,6 +19,7 @@ import (
 	"cn.jieec.pyvm/utils"
 	"fmt"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -28,7 +29,7 @@ var (
 // pythonLsCmd represents the pythonLs command
 var pythonLsCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "List python versions",
+	Short: "列出python环境",
 	Long: `
 pyvm python ls 列出本地环境
 pyvm python ls --remote 列出可下载版本
@@ -46,7 +47,23 @@ pyvm python ls --remote 列出可下载版本
 			}
 		} else {
 			fmt.Println("本地python环境为:")
+			dirs, err := utils.GetLocalPythonVersions()
+			if err != nil {
+				fmt.Printf("查询发生错误:\t%v\n", err)
+			}
 
+			if len(dirs) == 0 {
+				fmt.Println("本地未安装python")
+			} else {
+				for _, fv := range dirs {
+					// 判断正在使用的版本
+					if viper.Get("PythonVersion").(string) == fv {
+						fmt.Printf("%v\t*\n", fv)
+						continue
+					}
+					fmt.Println(fv)
+				}
+			}
 		}
 	},
 }

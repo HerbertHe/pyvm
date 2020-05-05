@@ -25,7 +25,7 @@ import (
 // versionCmd represents the version command
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Print version of pyvm",
+	Short: "打印pyvm版本",
 	Long: `pyvm version`,
 	Run: func(cmd *cobra.Command, args []string) {
 		home, _ := homedir.Dir()

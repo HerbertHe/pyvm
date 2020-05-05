@@ -16,19 +16,14 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
 // pythonCmd represents the python command
 var pythonCmd = &cobra.Command{
 	Use:   "python",
-	Short: "A brief description of your command",
+	Short: "pyvm对python操作命令",
 	Long: ``,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("python called")
-	},
 }
 
 func init() {

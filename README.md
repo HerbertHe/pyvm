@@ -9,7 +9,9 @@
 * [x] ~~添加use命令~~
 * [ ] 添加remove命令
 * [x] 添加version命令
-* [ ] 添加source命令
+* [x] 添加source ls命令
+* [x] 添加source add命令
+* [x] 添加source use命令
 * [x] 添加config init命令
 * [x] 添加config ls命令
 * [x] 添加python add命令

@@ -24,6 +24,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// 这部分要重写
 const yamlDefault string = `
 Author: !!str HerbertHe
 GitHub: !!str https://github.com/HerbertHe/pyvm
@@ -37,7 +38,7 @@ Source: !!str https://pypi.org # pip软件源
 // configInitCmd represents the configInit command
 var configInitCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Init a config file",
+	Short: "初始化pyvm配置",
 	Long:  `pyvm config init`,
 	Run: func(cmd *cobra.Command, args []string) {
 		home, _ := homedir.Dir()
